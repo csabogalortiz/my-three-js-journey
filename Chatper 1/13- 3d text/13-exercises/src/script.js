@@ -4,6 +4,8 @@ import * as dat from 'lil-gui'
 import { FontLoader } from 'three/examples/jsm/loaders/FontLoader.js'
 import { TextGeometry } from 'three/examples/jsm/geometries/TextGeometry.js'
 
+
+console.log(`this is`, THREE)
 /**
  * Base
  */
@@ -25,6 +27,7 @@ const axesHelper = new THREE.AxesHelper()
  */
 const textureLoader = new THREE.TextureLoader()
 const matcapTexture = textureLoader.load('/textures/matcaps/9.jpg')
+const matcapTexture2 = textureLoader.load('/textures/matcaps/11.jpg')
 
 
 // Fonts
@@ -46,13 +49,7 @@ fontLoader.load(
                 bevelSegments: 4
             }
         )
-        // textGeometry.computeBoundingBox()
-        // textGeometry.translate(
-        //     - (textGeometry.boundingBox.max.x - 0.02) * 0.5,
-        //     - (textGeometry.boundingBox.max.y - 0.02) * 0.5,
-        //     - (textGeometry.boundingBox.max.z - 0.03) * 0.5,
 
-        // )
 
         textGeometry.center()
 
@@ -62,7 +59,33 @@ fontLoader.load(
         const text = new THREE.Mesh(textGeometry, textMaterial)
         scene.add(text)
 
-        const donutGeometry = new THREE.TorusGeometry(0.3, 0.1, 20, 45)
+
+
+        // Create second text object
+        const textGeometry2 = new TextGeometry(
+            'UX| UI - Web Development',
+            {
+                font: font,
+                size: 0.3,
+                height: 0.1,
+                curveSegments: 10,
+                bevelEnabled: false
+            }
+        )
+        textGeometry2.center()
+
+        const textMaterial2 = new THREE.MeshMatcapMaterial()
+        textMaterial2.matcap = matcapTexture2
+        textMaterial2.wireframe = false
+
+        const text2 = new THREE.Mesh(textGeometry2, textMaterial2)
+        text2.position.y = -1.0
+        scene.add(text2)
+
+
+
+
+        const donutGeometry = new THREE.TorusGeometry(0.08, 0.08, 20, 45)
         const donutMaterial = new THREE.MeshMatcapMaterial({ matcap: matcapTexture })
         for (let i = 0; i < 200; i++) {
             const donut = new THREE.Mesh(donutGeometry, donutMaterial)
@@ -83,6 +106,10 @@ fontLoader.load(
         }
     }
 )
+
+
+
+
 
 
 
@@ -116,8 +143,9 @@ window.addEventListener('resize', () => {
 const camera = new THREE.PerspectiveCamera(75, sizes.width / sizes.height, 0.1, 100)
 camera.position.x = 1
 camera.position.y = 1
-camera.position.z = 2
+camera.position.z = 18
 scene.add(camera)
+console.log(camera)
 
 // Controls
 const controls = new OrbitControls(camera, canvas)
